@@ -5,13 +5,9 @@
 *.war
 *.ear
 
-# Gradle Files #
-.gradle
-build
-
 # IDE Files #
 .classpath
-.project
+**/.project
 .settings
 *.iml
-*.idea
+**/.idea
