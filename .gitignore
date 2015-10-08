@@ -11,3 +11,5 @@
 .settings
 *.iml
 **/.idea
+**/target
+
