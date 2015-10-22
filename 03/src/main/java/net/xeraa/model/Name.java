@@ -1,15 +1,18 @@
 package net.xeraa.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Getter
-@AllArgsConstructor
-@ToString
-public class Name {
+import org.springframework.hateoas.ResourceSupport;
 
-  private final long id;
+
+public class Name extends ResourceSupport {
+
   private final String name;
+
+  @JsonCreator
+  public Name(@JsonProperty("name") String name) {
+    this.name = name;
+  }
 
 }

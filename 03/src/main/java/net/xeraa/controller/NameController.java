@@ -2,20 +2,31 @@ package net.xeraa.controller;
 
 import net.xeraa.model.Name;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.concurrent.atomic.AtomicLong;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@RestController
+@Controller
 public class NameController {
 
-  private final AtomicLong counter = new AtomicLong();
+  private static final String TEMPLATE = "Hello %s!";
 
   @RequestMapping("/hello")
-  public String name(@RequestParam(value="name", defaultValue="World") String name){
-    return new Name(counter.incrementAndGet(), name).toString();
+  @ResponseBody
+  public HttpEntity<Name> nameGreeting(
+      @RequestParam(value = "name", required = false, defaultValue = "Philipp") String name) {
+
+    Name greeting = new Name(String.format(TEMPLATE, name));
+    greeting.add(linkTo(methodOn(NameController.class).nameGreeting(name)).withSelfRel());
+
+    return new ResponseEntity<>(greeting, HttpStatus.OK);
   }
 
 }
