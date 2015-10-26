@@ -23,8 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/v2/book")
+@RequestMapping(Book2Controller.URL)
 public class Book2Controller {
+
+  public static final String URL = "/v2/book";
 
   private Map<Long, Book2> books = new HashMap<>();
   private final AtomicLong counter = new AtomicLong();

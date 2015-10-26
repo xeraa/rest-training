@@ -1,4 +1,4 @@
 [source,bash]
 ----
-$ curl 'http://localhost:8080/v2/book/' -i -H 'Accept: application/json'
+$ curl 'http://localhost:8080/v2/book' -i -H 'Accept: application/json'
 ----

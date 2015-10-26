@@ -2,6 +2,7 @@ package net.xeraa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.xeraa.controller.Book2Controller;
 import net.xeraa.model.Book2;
 
 import org.junit.Before;
@@ -34,8 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class RestTrainingApplicationTests {
 
-  protected static final String BOOK_URL = "/v2/book/";
-
   @Rule
   public final RestDocumentation
       restDocumentation = new RestDocumentation("build/generated-snippets");
@@ -54,7 +53,7 @@ public class RestTrainingApplicationTests {
 
   @Test
   public void emptyStart() throws Exception {
-    mockMvc.perform(get(BOOK_URL).accept(MediaType.APPLICATION_JSON))
+    mockMvc.perform(get(Book2Controller.URL).accept(MediaType.APPLICATION_JSON))
 	.andExpect(status().isOk())
 	.andExpect(jsonPath("$", hasSize(0)))
         .andDo(document("index"));
@@ -70,7 +69,7 @@ public class RestTrainingApplicationTests {
     byte[] bookJson = toJson(book);
 
     //CREATE
-    MvcResult result = mockMvc.perform(post(BOOK_URL)
+    MvcResult result = mockMvc.perform(post(Book2Controller.URL)
                                .content(bookJson)
                                .contentType(MediaType.APPLICATION_JSON)
                                .accept(MediaType.APPLICATION_JSON))
@@ -79,7 +78,7 @@ public class RestTrainingApplicationTests {
     long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
     //RETRIEVE
-    mockMvc.perform(get(BOOK_URL + id).accept(MediaType.APPLICATION_JSON))
+    mockMvc.perform(get(Book2Controller.URL + "/" + id).accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is((int) id)))
         .andExpect(jsonPath("$.title", is(book.getTitle())))
@@ -88,7 +87,7 @@ public class RestTrainingApplicationTests {
         .andExpect(jsonPath("$.pages", is(book.getPages())));
 
     //DELETE
-    mockMvc.perform(delete(BOOK_URL + id))
+    mockMvc.perform(delete(Book2Controller.URL + "/" + id))
         .andExpect(status().isNoContent());
   }
 
